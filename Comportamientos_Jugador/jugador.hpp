@@ -21,6 +21,9 @@ class ComportamientoJugador : public Comportamiento{
   private:
   
   // Declarar aquí las variables de estado
+  int filas, 
+      columnas,
+      brujula;
 
 };
 
