@@ -23,8 +23,7 @@ class ComportamientoJugador : public Comportamiento{
   // Declarar aquí las variables de estado
   int filas, 
       columnas,
-      brujula,
-      prueba;
+      brujula;
 
 };
 
