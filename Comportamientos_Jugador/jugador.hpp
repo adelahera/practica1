@@ -12,6 +12,8 @@ class ComportamientoJugador : public Comportamiento{
       fil = col = 99;
       brujula = 0;
       ultimaAccion = actIDLE;
+      girar_derecha = false;
+      bien_situado = false;
 
     }
 
@@ -29,6 +31,8 @@ class ComportamientoJugador : public Comportamiento{
       brujula;
 
   Action ultimaAccion;
+  bool girar_derecha,
+       bien_situado;
 
 };
 
