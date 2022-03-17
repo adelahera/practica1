@@ -8,6 +8,36 @@ Action ComportamientoJugador::think(Sensores sensores){
 
 	Action accion = actIDLE;
 
+	switch(ultimaAccion){
+		case actFORWARD:
+			switch(brujula){
+				case 0: fil--; break;
+				case 1: col++; break;
+				case 2: fil++; break;
+				case 3: col--; break;
+			}
+			break;
+
+		case actTURN_L:
+			brujula = (brujula + 3) % 4;
+			break;
+
+		case actTURN_R:
+			brujula = (brujula + 1) % 4;
+			break;	
+	}
+
+	if ((sensores.terreno[2] == 'T' or sensores.terreno[2] == 'S') and
+		sensores.superficie[2] == '_') {
+
+			accion = actFORWARD;
+		}
+		else{
+			accion = actTURN_L;
+		}
+
+	ultimaAccion = accion;	
+
 	cout << "Posicion: fila " << sensores.posF << " columna " << sensores.posC << " ";
 	switch(sensores.sentido){
 		case 0: cout << "Norte" << endl; break;
