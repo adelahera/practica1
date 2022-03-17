@@ -73,7 +73,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 			accion = actTURN_L;
 		}
 		else {
-			accion = actTURN_R
+			accion = actTURN_R;
 		}
 
 	ultimaAccion = accion;	
