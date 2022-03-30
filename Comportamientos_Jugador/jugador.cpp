@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-
+sdhabdhsa
 
 Action ComportamientoJugador::think(Sensores sensores){
 
