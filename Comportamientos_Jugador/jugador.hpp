@@ -22,6 +22,7 @@ class ComportamientoJugador : public Comportamiento{
 
     Action think(Sensores sensores);
     int interact(Action accion, int valor);
+    Action encontrarCasillaPos(Sensores sensores);
 
   private:
   

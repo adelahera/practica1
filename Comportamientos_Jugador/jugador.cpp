@@ -2,7 +2,6 @@
 #include <iostream>
 using namespace std;
 
-sdhabdhsa
 
 Action ComportamientoJugador::think(Sensores sensores){
 
@@ -163,6 +162,46 @@ Action ComportamientoJugador::think(Sensores sensores){
 	return accion;
 }
 
+Action ComportamientoJugador::encontrarCasillaPos(Sensores sensores) {
+
+	int casilla;
+	bool encontrada = false;
+	bool recto = false;
+	bool arriba = false;
+	bool abajo = false;
+	Action accion = actIDLE;
+
+	for(int i = 0; i < sensores.terreno.size() && !encontrada; i++) {
+
+		if(sensores.terreno[i] == 'G'){
+			
+			casilla = i;
+			encontrada = true;
+		}
+	}
+
+	if(casilla == 2 || casilla == 6 || casilla == 12) {
+
+		recto = true;
+	}
+	else if(casilla == 1 || casilla == 5 || casilla == 11 || casilla == 4 || casilla == 10 || casilla == 9){
+
+		arriba = true;
+	}
+	else if(casilla == 3 || casilla == 7 || casilla == 13 || casilla == 8 || casilla == 14 || casilla == 15){
+
+		abajo = true;
+	}
+
+	if(recto)accion = actFORWARD;
+	else if(arriba) accion = actTURN_L;
+	else accion = actTURN_R;
+
+	return accion;
+}
+
 int ComportamientoJugador::interact(Action accion, int valor){
   return false;
 }
+
+
