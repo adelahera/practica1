@@ -14,6 +14,15 @@ class ComportamientoJugador : public Comportamiento{
       ultimaAccion = actIDLE;
       girar_derecha = false;
       bien_situado = false;
+      pasos_a_andar = 0;
+      zapatillas = false;
+      bikini = false;
+      encontrada = false;
+      recto = false;
+      arriba = false;
+      abajo = false;
+      casilla_vista.first = false;
+      casilla_vista.second = -1;
 
     }
 
@@ -23,17 +32,32 @@ class ComportamientoJugador : public Comportamiento{
     Action think(Sensores sensores);
     int interact(Action accion, int valor);
     Action encontrarCasillaPos(Sensores sensores);
+    Action girar();
+    Action moverse(Sensores sensores);
+    Action seguir_muro(Sensores sensores);
+    void pintarMapa(Sensores sensores);
+    bool veoCasilla(Sensores sensores, char buscar);
 
   private:
   
   // Declarar aquí las variables de estado
   int fil, 
       col,
-      brujula;
+      brujula,
+      pasos_a_andar;
 
   Action ultimaAccion;
   bool girar_derecha,
-       bien_situado;
+       bien_situado,
+       zapatillas,
+       bikini;
+
+  bool encontrada;
+	bool recto ;
+	bool arriba;
+	bool abajo;     
+
+  pair<bool, int> casilla_vista;
 
 };
 
