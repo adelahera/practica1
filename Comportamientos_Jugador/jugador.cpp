@@ -248,32 +248,21 @@ Action ComportamientoJugador::girar() {
 
 // }
 
-bool ComportamientoJugador::veoCasilla(Sensores sensores, char buscar) {
-
-	for(int i = 0; i < sensores.terreno.size() && !encontrada; i++) {
-
-		if(sensores.terreno[i] == buscar){
-				
-			encontrada = true;
-		}
-	}
-
-	return encontrada;
-}
-
-Action ComportamientoJugador::encontrarCasillaPos(Sensores sensores) {
-
+Action ComportamientoJugador::encuentroCasilla(Sensores sensores, char buscar) {
+	
 	if(!bien_situado) {
 
 		Action accion = actIDLE;
 		int casilla;
+		char quehevisto;
 		
 		for(int i = 0; i < sensores.terreno.size() && !encontrada; i++) {
 
-			if(sensores.terreno[i] == 'G'){
+			if(sensores.terreno[i] == 'K' || sensores.terreno[i] == 'X' || sensores.terreno[i] == 'D'){
 				
 				casilla = i;
 				encontrada = true;
+				quehevisto = sensores.terreno[i];
 			}
 		}
 
@@ -343,8 +332,198 @@ Action ComportamientoJugador::encontrarCasillaPos(Sensores sensores) {
 			accion = moverse(sensores);
 		}
 
-		return accion;
+	return accion;
+
+}
+
+Action ComportamientoJugador::voyAPorCasilla(Sensores sensores, char buscar) {
+
+	int casilla = encuentroCasilla(sensores, buscar);
+	Action accion;
+
+	if(casilla == 2 || casilla == 6 || casilla == 12) {
+
+			recto = true;
 	}
+	else if(casilla == 1 || casilla == 5 || casilla == 11 || casilla == 4 || casilla == 10 || casilla == 9){
+
+		arriba = true;
+	}
+	else if(casilla == 3 || casilla == 7 || casilla == 13 || casilla == 8 || casilla == 14 || casilla == 15){
+
+		abajo = true;
+	}
+
+	if(recto){
+
+		accion = actFORWARD;
+		encontrada = false;
+		recto = false;
+	}
+	else if(arriba) {
+
+		if(ultimaAccion == actTURN_L) {
+
+			accion = actFORWARD;
+		}
+		else if(ultimaAccion == actFORWARD) {
+
+			accion = actTURN_R;
+		}
+		else if(ultimaAccion == actTURN_R){
+
+			encontrada = false;
+			arriba = false;
+		}
+		else {
+
+			accion = actTURN_L;
+		}
+				
+	}
+	else if(abajo){
+
+		if(ultimaAccion == actTURN_R) {
+
+			accion = actFORWARD;
+		}
+		else if(ultimaAccion == actFORWARD) {
+
+			accion = actTURN_L;
+		}
+		else if(ultimaAccion == actTURN_L){
+
+			encontrada = false;
+			abajo = false;
+		}
+		else {
+
+			accion = actTURN_R;
+		}
+	}
+
+	return accion;
+}
+
+Action ComportamientoJugador::encontrarCasillaPos(Sensores sensores, char buscar) {
+
+	int casilla;
+	Action accion;
+	buscar = queHeVisto(sensores);
+	if(veoCasilla(sensores, buscar)) {
+
+		casilla = encuentroCasilla(sensores, buscar);
+
+		if(bikini) bikini_visto = false;
+		if(zapatillas) zapatillas_vistas = false;
+		if(recarga) recarga_vista = false;
+
+		if(!bien_situado && buscar == 'G') {
+
+			accion = voyAPorCasilla(sensores, buscar);
+		}
+		else if(bien_situado && buscar == 'K' && !zapatillas_vistas
+				&& !recarga_vista) {
+
+			accion = voyAPorCasilla(sensores, buscar);
+			bikini_visto = true;
+		}
+		else if(bien_situado && buscar == 'D' && !bikini_visto
+				&& !recarga_vista) {
+
+			accion = voyAPorCasilla(sensores, buscar);
+			zapatillas_vistas = true;
+		}
+		else if(bien_situado && buscar == 'X' && !bikini_visto
+				&& !zapatillas_vistas) {
+
+			accion = voyAPorCasilla(sensores, buscar);
+			recarga_vista = true;
+		}
+	}
+
+	// if(!bien_situado) {
+
+	// 	Action accion = actIDLE;
+	// 	int casilla;
+		
+	// 	for(int i = 0; i < sensores.terreno.size() && !encontrada; i++) {
+
+	// 		if(sensores.terreno[i] == 'G'){
+				
+	// 			casilla = i;
+	// 			encontrada = true;
+	// 		}
+	// 	}
+
+	// 	if(encontrada) {
+	// 		if(casilla == 2 || casilla == 6 || casilla == 12) {
+
+	// 			recto = true;
+	// 		}
+	// 		else if(casilla == 1 || casilla == 5 || casilla == 11 || casilla == 4 || casilla == 10 || casilla == 9){
+
+	// 			arriba = true;
+	// 		}
+	// 		else if(casilla == 3 || casilla == 7 || casilla == 13 || casilla == 8 || casilla == 14 || casilla == 15){
+
+	// 			abajo = true;
+	// 		}
+
+	// 		if(recto){
+
+	// 			accion = actFORWARD;
+	// 			encontrada = false;
+	// 			recto = false;
+	// 		}
+	// 		else if(arriba) {
+
+	// 			if(ultimaAccion == actTURN_L) {
+
+	// 				accion = actFORWARD;
+	// 			}
+	// 			else if(ultimaAccion == actFORWARD) {
+
+	// 				accion = actTURN_R;
+	// 			}
+	// 			else if(ultimaAccion == actTURN_R){
+
+	// 				encontrada = false;
+	// 				arriba = false;
+	// 			}
+	// 			else {
+
+	// 				accion = actTURN_L;
+	// 			}
+				
+	// 		}
+	// 		else if(abajo){
+
+	// 			if(ultimaAccion == actTURN_R) {
+
+	// 				accion = actFORWARD;
+	// 			}
+	// 			else if(ultimaAccion == actFORWARD) {
+
+	// 				accion = actTURN_L;
+	// 			}
+	// 			else if(ultimaAccion == actTURN_L){
+
+	// 				encontrada = false;
+	// 				abajo = false;
+	// 			}
+	// 			else {
+
+	// 				accion = actTURN_R;
+	// 			}
+	// 		}
+	// 	}
+	// 	else {
+	// 		accion = moverse(sensores);
+	// 	}
+	// }
+
+	return accion;
 }
 
 int ComportamientoJugador::interact(Action accion, int valor){

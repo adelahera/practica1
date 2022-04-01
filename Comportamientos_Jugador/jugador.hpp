@@ -31,16 +31,19 @@ class ComportamientoJugador : public Comportamiento{
 
     Action think(Sensores sensores);
     int interact(Action accion, int valor);
-    Action encontrarCasillaPos(Sensores sensores);
+    Action encontrarCasillaPos(Sensores sensores, char buscar);
     Action girar();
     Action moverse(Sensores sensores);
     Action seguir_muro(Sensores sensores);
     void pintarMapa(Sensores sensores);
     bool veoCasilla(Sensores sensores, char buscar);
+    Action encuentroCasilla(Sensores sensores);
+    Action voyAPorCasilla(Sensores sensores, char buscar);
 
   private:
   
   // Declarar aquí las variables de estado
+
   int fil, 
       col,
       brujula,
@@ -50,12 +53,16 @@ class ComportamientoJugador : public Comportamiento{
   bool girar_derecha,
        bien_situado,
        zapatillas,
-       bikini;
+       bikini,
+       recarga;
 
   bool encontrada;
 	bool recto ;
 	bool arriba;
-	bool abajo;     
+	bool abajo;   
+  bool bikini_visto,
+       zapatillas_vistas,
+       recarga_vista;  
 
   pair<bool, int> casilla_vista;
 
