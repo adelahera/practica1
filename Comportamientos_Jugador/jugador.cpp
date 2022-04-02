@@ -175,24 +175,93 @@ Action ComportamientoJugador::moverse(Sensores sensores) {
 	if(sensores.terreno[0] == 'K') bikini = true;
 	if(sensores.terreno[0] == 'D') zapatillas = true;
 
-	if(sensores.terreno[2] != 'P' && (sensores.terreno[2] != 'B' || zapatillas)
-		&& (sensores.terreno[2] != 'A' || bikini) && sensores.terreno[2] != 'M') {
+	switch(brujula){
 
-		if(pasos_a_andar < 10) {
-			accion = actFORWARD;
-			pasos_a_andar++;
-		}
-		else{
+		case 0:
 
-			accion = girar();
-			pasos_a_andar = 0;			
-		}
+			for(int i = 3; i > 0; i--) {
 
+				if(mapaResultado[fil][col-i] == '?' ){
+
+					accion = actTURN_L;
+				}
+				else if(mapaResultado[fil][col+i] == '?' ){
+
+					accion = actTURN_R;
+				}		
+			}
+
+		break;
+
+		case 1:
+
+			for(int i = 3; i > 0; i--) {
+
+				if(mapaResultado[fil-i][col] == '?' ){
+
+					accion = actTURN_L;
+				}
+				else if(mapaResultado[fil+i][col] == '?' ){
+
+					accion = actTURN_R;
+				}		
+			}
+
+		break;
+		
+		case 2:
+
+			for(int i = 3; i > 0; i--) {
+
+				if(mapaResultado[fil][col-i] == '?' ){
+
+					accion = actTURN_R;
+				}
+				else if(mapaResultado[fil][col+i] == '?' ){
+
+					accion = actTURN_L;
+				}		
+			}
+
+		break;
+
+		case 3:
+
+			for(int i = 3; i > 0; i--) {
+
+				if(mapaResultado[fil-i][col] == '?' ){
+
+					accion = actTURN_R;
+				}
+				else if(mapaResultado[fil+i][col] == '?' ){
+
+					accion = actTURN_L;
+				}		
+			}
+
+		break;
+
+		default:
+
+			if(sensores.terreno[2] != 'P' && (sensores.terreno[2] != 'B' || zapatillas)
+				&& (sensores.terreno[2] != 'A' || bikini) && sensores.terreno[2] != 'M') {
+
+				if(pasos_a_andar < 10) {
+					accion = actFORWARD;
+					pasos_a_andar++;
+				}
+				else{
+
+					accion = girar();
+					pasos_a_andar = 0;			
+				}
+
+			}
+			else {
+
+				accion = girar();
+			} 		
 	}
-	else {
-
-		accion = girar();
-	} 
 
 	return accion;
 
