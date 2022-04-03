@@ -175,93 +175,24 @@ Action ComportamientoJugador::moverse(Sensores sensores) {
 	if(sensores.terreno[0] == 'K') bikini = true;
 	if(sensores.terreno[0] == 'D') zapatillas = true;
 
-	switch(brujula){
+	if(sensores.terreno[2] != 'P' && (sensores.terreno[2] != 'B' || zapatillas)
+		&& (sensores.terreno[2] != 'A' || bikini) && sensores.terreno[2] != 'M') {
 
-		case 0:
+		if(pasos_a_andar < 10) {
+			accion = actFORWARD;
+			pasos_a_andar++;
+		}
+		else{
 
-			for(int i = 3; i > 0; i--) {
+			accion = girar();
+			pasos_a_andar = 0;			
+		}
 
-				if(mapaResultado[fil][col-i] == '?' && mapaResultado[fil][col-1] != 'P'){
-
-					accion = actTURN_L;
-				}
-				else if(mapaResultado[fil][col+i] == '?' && mapaResultado[fil][col+1] != 'P'){
-
-					accion = actTURN_R;
-				}		
-			}
-
-		break;
-
-		case 1:
-
-			for(int i = 3; i > 0; i--) {
-
-				if(mapaResultado[fil-i][col] == '?' && mapaResultado[fil-1][col] != 'P'){
-
-					accion = actTURN_L;
-				}
-				else if(mapaResultado[fil+i][col] == '?' && mapaResultado[fil+1][col] != 'P'){
-
-					accion = actTURN_R;
-				}		
-			}
-
-		break;
-		
-		case 2:
-
-			for(int i = 3; i > 0; i--) {
-
-				if(mapaResultado[fil][col-i] == '?' && mapaResultado[fil][col-1] != 'P'){
-
-					accion = actTURN_R;
-				}
-				else if(mapaResultado[fil][col+i] == '?' && mapaResultado[fil][col+1] != 'P'){
-
-					accion = actTURN_L;
-				}		
-			}
-
-		break;
-
-		case 3:
-
-			for(int i = 3; i > 0; i--) {
-
-				if(mapaResultado[fil-i][col] == '?' && mapaResultado[fil-1][col] != 'P'){
-
-					accion = actTURN_R;
-				}
-				else if(mapaResultado[fil+i][col] == '?' && mapaResultado[fil+1][col] != 'P'){
-
-					accion = actTURN_L;
-				}		
-			}
-
-		break;
-
-		default:
-
-			if(sensores.terreno[2] != 'P' && (sensores.terreno[2] != 'B' || zapatillas)
-				&& (sensores.terreno[2] != 'A' || bikini) && sensores.terreno[2] != 'M') {
-
-				if(pasos_a_andar < 10) {
-					accion = actFORWARD;
-					pasos_a_andar++;
-				}
-				else{
-
-					accion = girar();
-					pasos_a_andar = 0;			
-				}
-
-			}
-			else {
-
-				accion = girar();
-			} 		
 	}
+	else {
+
+		accion = girar();
+	} 
 
 	return accion;
 
@@ -317,9 +248,20 @@ Action ComportamientoJugador::girar() {
 
 // }
 
-Action ComportamientoJugador::encontrarCasillaPos(Sensores sensores) {
+bool ComportamientoJugador::veoCasilla(Sensores sensores, char buscar) {
 
-	Action accion;
+	for(int i = 0; i < sensores.terreno.size() && !encontrada; i++) {
+
+		if(sensores.terreno[i] == buscar){
+				
+			encontrada = true;
+		}
+	}
+
+	return encontrada;
+}
+
+Action ComportamientoJugador::encontrarCasillaPos(Sensores sensores) {
 
 	if(!bien_situado) {
 
@@ -400,13 +342,11 @@ Action ComportamientoJugador::encontrarCasillaPos(Sensores sensores) {
 		else {
 			accion = moverse(sensores);
 		}
-	}
 
-	return accion;
+		return accion;
+	}
 }
 
 int ComportamientoJugador::interact(Action accion, int valor){
   return false;
 }
-
-
