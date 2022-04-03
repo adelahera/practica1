@@ -24,6 +24,7 @@ class ComportamientoJugador : public Comportamiento{
       gira_bien = false;
       casilla_vista.first = false;
       casilla_vista.second = -1;
+      fil_aux = col_aux = 99;
 
       for (int i = 0; i < 200; i++) {
         for (int j = 0; j < 200; j++) {
@@ -39,11 +40,14 @@ class ComportamientoJugador : public Comportamiento{
     Action think(Sensores sensores);
     int interact(Action accion, int valor);
     Action encontrarCasillaPos(Sensores sensores);
+    Action encontrarBikini(Sensores sensores);
     Action girar();
     Action moverse(Sensores sensores);
     Action seguir_muro(Sensores sensores);
     void pintarMapa(Sensores sensores);
     bool veoCasilla(Sensores sensores, char buscar);
+    void trasponerMapaAuxiliar();
+
   private:
   
   // Declarar aquí las variables de estado
@@ -51,7 +55,9 @@ class ComportamientoJugador : public Comportamiento{
   int fil, 
       col,
       brujula,
-      pasos_a_andar;
+      pasos_a_andar,
+      fil_aux,
+      col_aux;
 
   Action ultimaAccion;
   bool girar_derecha,
