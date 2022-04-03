@@ -21,8 +21,15 @@ class ComportamientoJugador : public Comportamiento{
       recto = false;
       arriba = false;
       abajo = false;
+      gira_bien = false;
       casilla_vista.first = false;
       casilla_vista.second = -1;
+
+      for (int i = 0; i < 200; i++) {
+        for (int j = 0; j < 200; j++) {
+          matriz_aux[i][j] = '?';
+        }
+      }
 
     }
 
@@ -54,12 +61,15 @@ class ComportamientoJugador : public Comportamiento{
        recarga;
 
   bool encontrada;
+  bool gira_bien;
 	bool recto ;
 	bool arriba;
 	bool abajo;   
   bool bikini_visto,
        zapatillas_vistas,
        recarga_vista;  
+
+  unsigned char matriz_aux[200][200];     
 
   pair<bool, int> casilla_vista;
 
