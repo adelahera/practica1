@@ -31,15 +31,12 @@ class ComportamientoJugador : public Comportamiento{
 
     Action think(Sensores sensores);
     int interact(Action accion, int valor);
-    Action encontrarCasillaPos(Sensores sensores, char buscar);
+    Action encontrarCasillaPos(Sensores sensores);
     Action girar();
     Action moverse(Sensores sensores);
     Action seguir_muro(Sensores sensores);
     void pintarMapa(Sensores sensores);
     bool veoCasilla(Sensores sensores, char buscar);
-    Action encuentroCasilla(Sensores sensores);
-    Action voyAPorCasilla(Sensores sensores, char buscar);
-
   private:
   
   // Declarar aquí las variables de estado
