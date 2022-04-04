@@ -41,6 +41,8 @@ class ComportamientoJugador : public Comportamiento{
     int interact(Action accion, int valor);
     Action encontrarCasillaPos(Sensores sensores);
     Action encontrarBikini(Sensores sensores);
+    Action encontrarZapatillas(Sensores sensores);
+    Action encontrarRecarga(Sensores sensores);
     Action girar();
     Action moverse(Sensores sensores);
     Action seguir_muro(Sensores sensores);

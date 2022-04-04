@@ -61,17 +61,6 @@ Action ComportamientoJugador::think(Sensores sensores){
 	}
 
 	if(!bien_situado) {
-
-		if(ultimaAccion == actFORWARD) {
-
-			switch(brujula){
-				case 0: fil_aux--; break;
-				case 1: col_aux++; break;
-				case 2: fil_aux++; break;
-				case 3: col_aux--; break;
-			}			
-		}
-
 		switch(brujula) {
 
 			case 0:
@@ -152,6 +141,16 @@ Action ComportamientoJugador::think(Sensores sensores){
 			break;
 		}
 
+		if(ultimaAccion == actFORWARD) {
+
+			switch(brujula){
+				case 0: fil_aux--; break;
+				case 1: col_aux++; break;
+				case 2: fil_aux++; break;
+				case 3: col_aux--; break;
+			}			
+		}
+
 		accion = encontrarCasillaPos(sensores);
 
 	}
@@ -159,10 +158,23 @@ Action ComportamientoJugador::think(Sensores sensores){
 	if(bien_situado){
 
 		pintarMapa(sensores);	
-		if(!bikini)	accion = encontrarBikini(sensores);
-		else accion = moverse(sensores);
-	}
+		if(!bikini ) {
 
+			accion = encontrarBikini(sensores);
+		}	
+		else if(!zapatillas) {
+			
+			accion = encontrarZapatillas(sensores);
+		}
+		else if(sensores.bateria < 2000){
+
+			accion = encontrarRecarga(sensores);
+		}
+		else {
+
+			accion = moverse(sensores);
+		}
+	}
 	ultimaAccion = accion;
 	// if ((sensores.terreno[2] == 'T' or sensores.terreno[2] == 'S') or
 	// 	sensores.terreno[2] == 'G' and sensores.superficie[2] == '_') {
@@ -280,140 +292,144 @@ void ComportamientoJugador::pintarMapa(Sensores sensores) {
 		}
 }
 
-// Action ComportamientoJugador::moverse(Sensores sensores) {
-
-//     Action accion;
-
-//     if(sensores.terreno[0] == 'K') bikini = true;
-//     if(sensores.terreno[0] == 'D') zapatillas = true;
-
-//     if(sensores.terreno[2] != 'P' && (sensores.terreno[2] != 'B' || zapatillas)
-//         && (sensores.terreno[2] != 'A' || bikini) && sensores.terreno[2] != 'M') {
-
-//         if(pasos_a_andar < 10) {
-//             accion = actFORWARD;
-//             pasos_a_andar++;
-//         }
-//         else{
-
-//             accion = girar();
-//             pasos_a_andar = 0;            
-//         }
-
-//     }
-//     else {
-
-//         accion = girar();
-//     }  
-
-// 	if(ultimaAccion == actFORWARD) {
-
-// 		switch(brujula){
-
-// 			case 0:
-
-// 				for (int i = 0; i < 5 && col+i < mapaResultado.size() && col-i >= 0; i++) {
-
-// 					if(mapaResultado[fil][col-i] == '?'){
-
-// 						cout << "sitio desconocido a la izquierda mirando al norte" << endl;
-// 						accion = actTURN_L;
-// 					}
-// 					else if(mapaResultado[fil][col+i] == '?' ){
-
-// 						cout << "sitio desconocido a la derecha mirando al norte" << endl;
-// 						accion = actTURN_R;
-// 					}        
-
-// 				}
-				
-// 			break;
-
-// 			case 1:
-
-// 				for (int i = 0; i < 5 && fil+i < mapaResultado.size() && fil-1 >= 0; i++) {
-// 					if(mapaResultado[fil-i][col] == '?' ){
-
-// 						cout << "sitio desconocido a la izquierda mirando al este" << endl;
-// 						accion = actTURN_L;
-// 					}
-// 					else if(mapaResultado[fil+i][col] == '?' ){
-
-// 						cout << "sitio desconocido a la derecha mirando al este" << endl;
-// 						accion = actTURN_R;
-// 					}        
-// 				}
-// 			break;
-			
-// 			case 2:
-
-// 				for (int i = 0; i < 5 && col+i < mapaResultado.size() && col-i >= 0; i++) {
-// 					if(mapaResultado[fil][col-i] == '?' ){
-
-// 						cout << "sitio desconocido a la izquierda mirando al sur" << endl;
-// 						accion = actTURN_R;
-// 					}
-// 					else if(mapaResultado[fil][col+i] == '?' ){
-
-// 						cout << "sitio desconocido a la derecha mirando al sur" << endl;
-// 						accion = actTURN_L;
-// 					}  
-// 				}      
-
-// 			break;
-
-// 			case 3:
-
-// 				for (int i = 0; i < 5 && fil+i < mapaResultado.size() && fil-i >= 0; i++) {
-// 					if(mapaResultado[fil-i][col] == '?' ){
-
-// 						cout << "sitio desconocido a la izquierda mirando al oeste" << endl;
-// 						accion = actTURN_R;
-// 					}
-// 					else if(mapaResultado[fil+i][col] == '?' ){
-
-// 						cout << "sitio desconocido a la derecha mirando al oeste" << endl;
-// 						accion = actTURN_L;
-// 					}        
-// 				}
-// 			break;
-// 		}  
-
-// 	}
-
-//     return accion;
-
-// }
-
 Action ComportamientoJugador::moverse(Sensores sensores) {
 
-	Action accion;
+    Action accion;
 
-	if(sensores.terreno[0] == 'K') bikini = true;
-	if(sensores.terreno[0] == 'D') zapatillas = true;
+    if(sensores.terreno[0] == 'K') bikini = true;
+    if(sensores.terreno[0] == 'D') zapatillas = true;
+	if(sensores.terreno[0] == 'X' && sensores.bateria < 5000) {
 
-	if(sensores.terreno[2] != 'P' && (sensores.terreno[2] != 'B' || zapatillas)
-		&& (sensores.terreno[2] != 'A' || bikini) && sensores.terreno[2] != 'M') {
-
-		if(pasos_a_andar < 10) {
-			accion = actFORWARD;
-			pasos_a_andar++;
-		}
-		else{
-
-			accion = girar();
-			pasos_a_andar = 0;			
-		}
+		accion = actIDLE;
 
 	}
-	else {
+    else if(sensores.terreno[2] != 'P' && (sensores.terreno[2] != 'B' || zapatillas)
+        && (sensores.terreno[2] != 'A' || bikini) && sensores.terreno[2] != 'M') {
 
-		accion = girar();
-	} 
+        if(pasos_a_andar < 20) {
+            accion = actFORWARD;
+            pasos_a_andar++;
+        }
+        else{
 
-	return accion;
+            accion = girar();
+            pasos_a_andar = 0;            
+        }
+
+    }
+    else {
+
+        accion = girar();
+    }  
+
+	if(ultimaAccion == actFORWARD && bien_situado) {
+
+		switch(brujula){
+
+			case 0:
+
+				for (int i = 0; i < 5 && col+i < mapaResultado.size() && col-i >= 0; i++) {
+
+					if(mapaResultado[fil][col-i] == '?'){
+
+						cout << "sitio desconocido a la izquierda mirando al norte" << endl;
+						accion = actTURN_L;
+					}
+					else if(mapaResultado[fil][col+i] == '?' ){
+
+						cout << "sitio desconocido a la derecha mirando al norte" << endl;
+						accion = actTURN_R;
+					}        
+
+				}
+				
+			break;
+
+			case 1:
+
+				for (int i = 0; i < 5 && fil+i < mapaResultado.size() && fil-i >= 0; i++) {
+					if(mapaResultado[fil-i][col] == '?' ){
+
+						cout << "sitio desconocido a la izquierda mirando al este" << endl;
+						accion = actTURN_L;
+					}
+					else if(mapaResultado[fil+i][col] == '?' ){
+
+						cout << "sitio desconocido a la derecha mirando al este" << endl;
+						accion = actTURN_R;
+					}        
+				}
+			break;
+			
+			case 2:
+
+				for (int i = 0; i < 5 && col+i < mapaResultado.size() && col-i >= 0; i++) {
+					if(mapaResultado[fil][col-i] == '?' ){
+
+						cout << "sitio desconocido a la izquierda mirando al sur" << endl;
+						accion = actTURN_R;
+					}
+					else if(mapaResultado[fil][col+i] == '?' ){
+
+						cout << "sitio desconocido a la derecha mirando al sur" << endl;
+						accion = actTURN_L;
+					}  
+				}      
+
+			break;
+
+			case 3:
+
+				for (int i = 0; i < 5 && fil+i < mapaResultado.size() && fil-i >= 0; i++) {
+					if(mapaResultado[fil-i][col] == '?' ){
+
+						cout << "sitio desconocido a la izquierda mirando al oeste" << endl;
+						accion = actTURN_R;
+					}
+					else if(mapaResultado[fil+i][col] == '?' ){
+
+						cout << "sitio desconocido a la derecha mirando al oeste" << endl;
+						accion = actTURN_L;
+					}        
+				}
+			break;
+		}  
+
+	}
+
+    return accion;
 
 }
+
+// Action ComportamientoJugador::moverse(Sensores sensores) {
+
+// 	Action accion;
+
+// 	if(sensores.terreno[0] == 'K') bikini = true;
+// 	if(sensores.terreno[0] == 'D') zapatillas = true;
+
+// 	if(sensores.terreno[2] != 'P' && (sensores.terreno[2] != 'B' || zapatillas)
+// 		&& (sensores.terreno[2] != 'A' || bikini) && sensores.terreno[2] != 'M') {
+
+// 		if(pasos_a_andar < 10) {
+// 			accion = actFORWARD;
+// 			pasos_a_andar++;
+// 		}
+// 		else{
+
+// 			accion = girar();
+// 			pasos_a_andar = 0;			
+// 		}
+
+// 	}
+// 	else {
+
+// 		accion = girar();
+// 	} 
+
+// 	return accion;
+
+// }
 
 Action ComportamientoJugador::seguir_muro(Sensores sensores) {
 
@@ -573,7 +589,7 @@ Action ComportamientoJugador::encontrarBikini(Sensores sensores) {
 
 	if(encontrada) {
 
-		cout << "He visto el bikini" << endl;
+		cout << "He visto la casilla bikini " << endl;
 		if(casilla == 2 || casilla == 6 || casilla == 12) {
 
 			cout << "La he visto enfrente" << endl;
@@ -646,7 +662,203 @@ Action ComportamientoJugador::encontrarBikini(Sensores sensores) {
 		accion = moverse(sensores);
 	}
 
-	if(sensores.terreno[0] == 'K') bikini = true;
+	if(sensores.terreno[0] == 'K') {
+		
+		bikini = true;
+		encontrada = false;
+	}
+
+	return accion;
+	
+}
+
+Action ComportamientoJugador::encontrarZapatillas(Sensores sensores) {
+
+	Action accion = actIDLE;
+	int casilla;
+		
+	for(int i = 0; i < sensores.terreno.size() && !encontrada; i++) {
+
+		if(sensores.terreno[i] == 'D'){
+				
+			casilla = i;
+			encontrada = true;
+		}
+	}
+
+	if(encontrada) {
+
+		cout << "He visto la casilla zapatillas " << endl;
+		if(casilla == 2 || casilla == 6 || casilla == 12) {
+
+			cout << "La he visto enfrente" << endl;
+			recto = true;
+		}
+		else if(casilla == 1 || casilla == 5 || casilla == 11 || casilla == 4 || casilla == 10 || casilla == 9){
+
+			cout << "La he visto encima mia" << endl;
+			arriba = true;
+		}
+		else if(casilla == 3 || casilla == 7 || casilla == 13 || casilla == 8 || casilla == 14 || casilla == 15){
+
+			cout << "La he visto debajo mia" << endl;
+			abajo = true;
+		}
+
+		if(recto){
+
+			accion = actFORWARD;
+			encontrada = false;
+			recto = false;
+		}
+		else if(arriba) {
+
+			if(ultimaAccion == actTURN_L && gira_bien) {
+
+				accion = actFORWARD;
+			}
+			else if(ultimaAccion == actFORWARD && gira_bien) {
+
+				accion = actTURN_R;
+			}
+			else if(ultimaAccion == actTURN_R && gira_bien){
+
+				encontrada = false;
+				arriba = false;
+				gira_bien = false;
+			}
+			else {
+
+				accion = actTURN_L;
+				gira_bien = true;
+			}
+				
+		}
+		else if(abajo){
+
+			if(ultimaAccion == actTURN_R && gira_bien) {
+
+				accion = actFORWARD;
+			}
+			else if(ultimaAccion == actFORWARD && gira_bien) {
+
+				accion = actTURN_L;
+			}
+			else if(ultimaAccion == actTURN_L && gira_bien){
+
+				encontrada = false;
+				abajo = false;
+				gira_bien = false;
+			}
+			else {
+
+				accion = actTURN_R;
+				gira_bien = true;
+			}
+		}
+	}
+	else {
+		accion = moverse(sensores);
+	}
+
+	if(sensores.terreno[0] == 'D') {
+		
+		zapatillas = true;
+		encontrada = false;
+	}
+
+	return accion;
+	
+}
+
+Action ComportamientoJugador::encontrarRecarga(Sensores sensores) {
+
+	Action accion = actIDLE;
+	int casilla;
+		
+	for(int i = 0; i < sensores.terreno.size() && !encontrada; i++) {
+
+		if(sensores.terreno[i] == 'X'){
+				
+			casilla = i;
+			encontrada = true;
+		}
+	}
+
+	if(encontrada) {
+
+		cout << "He visto la casilla recarga " << endl;
+		if(casilla == 2 || casilla == 6 || casilla == 12) {
+
+			cout << "La he visto enfrente" << endl;
+			recto = true;
+		}
+		else if(casilla == 1 || casilla == 5 || casilla == 11 || casilla == 4 || casilla == 10 || casilla == 9){
+
+			cout << "La he visto encima mia" << endl;
+			arriba = true;
+		}
+		else if(casilla == 3 || casilla == 7 || casilla == 13 || casilla == 8 || casilla == 14 || casilla == 15){
+
+			cout << "La he visto debajo mia" << endl;
+			abajo = true;
+		}
+
+		if(recto){
+
+			accion = actFORWARD;
+			encontrada = false;
+			recto = false;
+		}
+		else if(arriba) {
+
+			if(ultimaAccion == actTURN_L && gira_bien) {
+
+				accion = actFORWARD;
+			}
+			else if(ultimaAccion == actFORWARD && gira_bien) {
+
+				accion = actTURN_R;
+			}
+			else if(ultimaAccion == actTURN_R && gira_bien){
+
+				encontrada = false;
+				arriba = false;
+				gira_bien = false;
+			}
+			else {
+
+				accion = actTURN_L;
+				gira_bien = true;
+			}
+				
+		}
+		else if(abajo){
+
+			if(ultimaAccion == actTURN_R && gira_bien) {
+
+				accion = actFORWARD;
+			}
+			else if(ultimaAccion == actFORWARD && gira_bien) {
+
+				accion = actTURN_L;
+			}
+			else if(ultimaAccion == actTURN_L && gira_bien){
+
+				encontrada = false;
+				abajo = false;
+				gira_bien = false;
+			}
+			else {
+
+				accion = actTURN_R;
+				gira_bien = true;
+			}
+		}
+	}
+	else {
+		accion = moverse(sensores);
+	}
 
 	return accion;
 	
