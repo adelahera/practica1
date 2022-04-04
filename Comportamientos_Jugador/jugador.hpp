@@ -23,8 +23,10 @@ class ComportamientoJugador : public Comportamiento{
       abajo = false;
       gira_bien = false;
       casilla_vista.first = false;
+      cargando = false;
       casilla_vista.second = -1;
       fil_aux = col_aux = 99;
+      ciclos = 0;
 
       for (int i = 0; i < 200; i++) {
         for (int j = 0; j < 200; j++) {
@@ -59,14 +61,16 @@ class ComportamientoJugador : public Comportamiento{
       brujula,
       pasos_a_andar,
       fil_aux,
-      col_aux;
+      col_aux,
+      ciclos;
 
   Action ultimaAccion;
   bool girar_derecha,
        bien_situado,
        zapatillas,
        bikini,
-       recarga;
+       recarga,
+       cargando;
 
   bool encontrada;
   bool gira_bien;
