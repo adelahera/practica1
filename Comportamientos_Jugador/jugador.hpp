@@ -22,11 +22,18 @@ class ComportamientoJugador : public Comportamiento{
       arriba = false;
       abajo = false;
       gira_bien = false;
+      gira_precipicio_derecha = false;
+      gira_precipicio_izquierda = false;
       casilla_vista.first = false;
       cargando = false;
+      saliendo_agua_bosque = false;
+      conocido = false;
+      recien_nacido = true;
       casilla_vista.second = -1;
       fil_aux = col_aux = 99;
       ciclos = 0;
+      ciclos_recien_nacido = 0;
+      pasos_muro = 0;
 
       for (int i = 0; i < 200; i++) {
         for (int j = 0; j < 200; j++) {
@@ -48,9 +55,11 @@ class ComportamientoJugador : public Comportamiento{
     Action girar();
     Action moverse(Sensores sensores);
     Action seguir_muro(Sensores sensores);
+    Action seguir_precipicio(Sensores sensores);
     void pintarMapa(Sensores sensores);
     bool veoCasilla(Sensores sensores, char buscar);
     void trasponerMapaAuxiliar();
+    void reseteaVariables();
 
   private:
   
@@ -62,7 +71,9 @@ class ComportamientoJugador : public Comportamiento{
       pasos_a_andar,
       fil_aux,
       col_aux,
-      ciclos;
+      ciclos,
+      pasos_muro,
+      ciclos_recien_nacido;
 
   Action ultimaAccion;
   bool girar_derecha,
@@ -70,9 +81,14 @@ class ComportamientoJugador : public Comportamiento{
        zapatillas,
        bikini,
        recarga,
-       cargando;
+       cargando,
+       saliendo_agua_bosque,
+       conocido,
+       recien_nacido;
 
   bool encontrada;
+  bool gira_precipicio_derecha;
+  bool gira_precipicio_izquierda;
   bool gira_bien;
 	bool recto ;
 	bool arriba;
