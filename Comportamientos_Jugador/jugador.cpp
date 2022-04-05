@@ -456,7 +456,7 @@ Action ComportamientoJugador::moverse(Sensores sensores) {
 			accion = seguir_muro(sensores);
 	}
 
-	if(recien_nacido && sensores.superficie[2] == '_' && ciclos_recien_nacido < 10){
+	if(recien_nacido && sensores.superficie[2] == '_' && ciclos_recien_nacido < 10 && (sensores.terreno[0] == 'B' || sensores.terreno[0] == 'A')){
 
         if(pasos_a_andar < 20) {
             accion = actFORWARD;
