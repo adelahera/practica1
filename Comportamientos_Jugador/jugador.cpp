@@ -498,22 +498,16 @@ Action ComportamientoJugador::seguir_muro(Sensores sensores) {
                 and sensores.superficie[2] == '_'){
                     
                     accion = actFORWARD;
-					pasos_muro++;
-                    cout << "--> Avanzo al frente" << endl;
 
             }
             else if((sensores.terreno[2] == 'B' and zapatillas) and sensores.superficie[2] == '_'){
 
                 accion = actFORWARD;
-				pasos_muro++;
-                cout << "--> Avanzo al frente" << endl;
                     
             }
             else if((sensores.terreno[2] == 'A' and bikini) and sensores.superficie[2] == '_'){
                             
                 accion = actFORWARD;
-				pasos_muro++;
-                cout << "--> Avanzo al frente" << endl;
             }
             else{
 
