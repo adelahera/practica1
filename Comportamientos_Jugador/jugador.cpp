@@ -173,7 +173,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 
 		cout << "Voy a inferir los bordes" << endl;
 		pintarMapa(sensores);	
-		if(!bikini) {
+		if(!bikini && sensores.terreno[2] != 'B' && sensores.terreno[2] != 'M' && sensores.terreno[2] != 'P') {
 	
 			accion = encontrarBikini(sensores);
 			
@@ -509,12 +509,11 @@ Action ComportamientoJugador::seguir_muro(Sensores sensores) {
                             
                 accion = actFORWARD;
             }
-            else{
+            else {
 
 				accion = girar();
             }
         }
-		
 
     return accion;
 }
