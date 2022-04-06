@@ -171,6 +171,7 @@ Action ComportamientoJugador::think(Sensores sensores){
 	}
 	if(bien_situado) {
 
+		cout << "Voy a inferir los bordes" << endl;
 		pintarMapa(sensores);	
 		if(!bikini) {
 	
@@ -190,6 +191,13 @@ Action ComportamientoJugador::think(Sensores sensores){
 			accion = moverse(sensores);
 		}
 	}
+
+	if(sensores.bateria < 200 || sensores.vida == 1) {
+
+		inferirBordes();
+		inferirCasillas();
+	}
+
 	ultimaAccion = accion;
 
 	return accion;
@@ -949,6 +957,39 @@ Action ComportamientoJugador::encontrarRecarga(Sensores sensores) {
 
 	return accion;
 	
+}
+
+void ComportamientoJugador::inferirBordes() {
+
+	for(int i = 0; i < mapaResultado.size(); i++) {
+		for(int j = 0; j < mapaResultado.size();j++) {
+
+			if(i < 3 || i > mapaResultado.size()-4) {
+
+				mapaResultado[i][j] = 'P';
+			}
+
+			if(j < 3 || j > mapaResultado.size()-4) {
+
+				mapaResultado[i][j] = 'P';
+			}
+		}
+	}
+
+}
+
+void ComportamientoJugador::inferirCasillas() {
+
+	vector<char> tipo;
+	int k = 0;
+	for(int i = 0; i < mapaResultado.size(); i++) {
+		for(int j = 0; j < mapaResultado.size(); j++) {
+
+			if(mapaResultado[i][j] == '?') {
+				mapaResultado[i][j] = 'T';
+			}
+		}
+	}
 }
 
 int ComportamientoJugador::interact(Action accion, int valor){

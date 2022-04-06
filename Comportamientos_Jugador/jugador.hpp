@@ -60,6 +60,8 @@ class ComportamientoJugador : public Comportamiento{
     bool veoCasilla(Sensores sensores, char buscar);
     void trasponerMapaAuxiliar();
     void reseteaVariables();
+    void inferirBordes();
+    void inferirCasillas();
 
   private:
   
